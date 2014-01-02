@@ -1,4 +1,5 @@
-#include <EEPROM.h>
+#include <EEPROMVar.h>
+#include <EEPROMex.h>
 #include <VM_Boards.h>
 #include <WiFiUdp.h>
 #include <WiFiServer.h>
