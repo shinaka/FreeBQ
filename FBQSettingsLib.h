@@ -19,7 +19,7 @@ struct FreeBQSettingsStruct
 	byte probe1blower;
 	byte probe2blower;
 	byte probe3blower;
-	byte configVer;
+	char configVer[4];
 };
 
 class CFBQSettingsLib
