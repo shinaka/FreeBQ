@@ -17,7 +17,6 @@
 #include "FreeBQWebServerModule.h"
 #include <LiquidCrystal.h>
 
-#define FREEBQSERIALBAUDRATE 115200
 
 enum
 {
@@ -32,26 +31,24 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 void setup()
 {
+	/*
 	lcd.begin(16,2);
 	lcd.setCursor(0,0);
 	lcd.write("Test!");
-	Serial.write("trying to init lcd");
+	Serial.write("trying to init lcd");*/
 	mainModule = new CFreeBQ();
 	modules[MODULE_WEBSERVER] = new CFreeBQWebServerModule();
-	Serial.begin(FREEBQSERIALBAUDRATE);
-	
+	randomSeed(analogRead(0));
 }
 
 void loop()
 {
-	int test = 0;
 	for(int i = 0; i < MODULE_COUNT; ++i)
 	{
-		test++;
 		if(modules[i] != NULL && modules[i]->IsRegularlyUpdated())
 		{
 			modules[i]->DoUpdate();
 		}
 	}
-
+	//mainModule->GetSettingsLibrary()->SetProbeBlower(1, random(1, 3));
 }

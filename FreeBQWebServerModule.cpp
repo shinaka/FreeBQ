@@ -1,5 +1,6 @@
 #include "FreeBQWebServerModule.h"
 #include "Arduino.h"
+#include "FBQUtils.h"
 
 CFreeBQWebServerModule::CFreeBQWebServerModule()
 	: server(32)
@@ -11,7 +12,7 @@ CFreeBQWebServerModule::CFreeBQWebServerModule()
 	m_macAddr[3] = 0xEF;
 	m_macAddr[4] = 0xFE;
 	m_macAddr[5] = 0xED;
-	Serial.write("Init'd FreeBQWebServerModule.\n");
+	LogTrace(PSTR("Init'd FreeBQWebServerModule."));
 }
 
 CFreeBQWebServerModule::~CFreeBQWebServerModule() { }

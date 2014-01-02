@@ -16,9 +16,9 @@ struct FreeBQSettingsStruct
 	char blower1name[MAX_NAME_SIZE];
 	char blower2name[MAX_NAME_SIZE];
 	char blower3name[MAX_NAME_SIZE];
-	byte probe1blower;
-	byte probe2blower;
-	byte probe3blower;
+	int probe1blower;
+	int probe2blower;
+	int probe3blower;
 	char configVer[4];
 };
 
@@ -31,16 +31,16 @@ public:
 	void SaveConfig();
 	void LoadConfig();
 
-	void SetIPAddress(char ip[4]);
-	void SetGatewayAddress(char addr[4]);
-	void SetSubnetAddress(char addr[4]);
+	inline void SetIPAddress(IPAddress ip) { m_settings.ip = ip; SaveConfig(); };
+	inline void SetGatewayAddress(IPAddress ip) { m_settings.gateway = ip; SaveConfig(); };
+	inline void SetSubnetAddress(IPAddress ip) { m_settings.subnet = ip; SaveConfig(); };
 	void SetProbeName(int probe, const char* name);
 	void SetBlowerName(int blower, const char* name);
 	void SetProbeBlower(int probe, int blower);
 
-	void GetIPAddress(byte *ip);
-	void GetGatewayAddress(byte *addr);
-	void GetSubnetAddress(byte *addr);
+	inline IPAddress GetIPAddress() { return m_settings.ip;	}
+	inline IPAddress GetGatewayAddress() { return m_settings.gateway; }
+	inline IPAddress GetSubnetAddress() { return m_settings.subnet; }
 	const char* GetProbeName(int probe);
 	const char* GetBlowerName(int blower);
 	int GetProbeBlower(int probe);

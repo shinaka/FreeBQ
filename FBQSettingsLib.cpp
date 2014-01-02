@@ -5,6 +5,7 @@
 
 CFBQSettingsLib::CFBQSettingsLib(void)
 {
+	LoadConfig();
 	
 }
 
@@ -14,25 +15,83 @@ CFBQSettingsLib::~CFBQSettingsLib(void)
 
 }
 
-void CFBQSettingsLib::SetIPAddress(char ip[4])
+void CFBQSettingsLib::SetProbeBlower(int probe, int blower)
 {
+	
+	switch (probe)
+	{
+	case 1:
+		m_settings.probe1blower = blower;
+		break;
+	case 2:
+		m_settings.probe2blower = blower;
+		break;
+	case 3:
+		m_settings.probe3blower = blower;
+		break;
+	default:
+		return;
+	}
+	SaveConfig();
+	
+}
 
+void CFBQSettingsLib::SetBlowerName(int blower, const char * name)
+{
+	switch (blower)
+	{
+	case 1:
+		strncpy(m_settings.blower1name, name, sizeof(m_settings.blower1name));
+		break;
+	case 2:
+		strncpy(m_settings.blower2name, name, sizeof(m_settings.blower2name));
+		break;
+	case 3:
+		strncpy(m_settings.blower3name, name, sizeof(m_settings.blower3name));
+		break;
+	default:
+		return;
+	}
+	SaveConfig();
+}
+
+void CFBQSettingsLib::SetProbeName(int probe, const char * name)
+{
+	switch (probe)
+	{
+	case 1:
+		strncpy(m_settings.probe1name, name, sizeof(m_settings.probe1name));
+		break;
+	case 2:
+		strncpy(m_settings.probe2name, name, sizeof(m_settings.probe2name));
+		break;
+	case 3:
+		strncpy(m_settings.probe3name, name, sizeof(m_settings.probe3name));
+		break;
+	default:
+		LogError("Probe OOI");
+		return;
+	}
+	SaveConfig();
 }
 
 void CFBQSettingsLib::SaveConfig()
 {
-	for(unsigned int t=0; t< sizeof(m_settings); t++)
+	for(unsigned int t=0; t < sizeof(m_settings); t++)
 	{
 		EEPROM.write(CONFIG_START + t, *((char*)&m_settings + t));
 		if(EEPROM.read(CONFIG_START + t) != *((char*)&m_settings + t))
 		{
-			LogError("Writing settings to EEPROM failed");
+			LogError(PSTR("Failed to save EEPROM"));
+			//return;
 		}
 	}
+	LogTrace(PSTR("Saved to EEPROM"));
 }
 
 void CFBQSettingsLib::LoadConfig()
 {
+	LogTrace(PSTR("Loading EEPROM Config."));
 	if (EEPROM.read(CONFIG_START + sizeof(m_settings)-2) == m_settings.configVer[2] &&
 		EEPROM.read(CONFIG_START + sizeof(m_settings)-3) == m_settings.configVer[1] &&
 		EEPROM.read(CONFIG_START + sizeof(m_settings)-4) == m_settings.configVer[0])
@@ -42,6 +101,7 @@ void CFBQSettingsLib::LoadConfig()
 	}
 	else 
 	{
+		LogError(PSTR("Writing new EEPROM Save."));
 		m_settings.ip = IPAddress(192, 168, 1, 32);
 		m_settings.subnet = IPAddress(255, 255, 255, 0);
 		m_settings.gateway = IPAddress(192, 168, 1, 1);

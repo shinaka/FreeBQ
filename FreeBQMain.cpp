@@ -2,12 +2,11 @@
 #include "Arduino.h"
 #include <avr/pgmspace.h>
 #include "FreeBQModule.h"
-
+#include "FBQUtils.h"
 CFreeBQ::CFreeBQ()
 {
-	Serial.write("Init'd FreeBQMain.\n");
 	m_settingsLib = new CFBQSettingsLib();
-	
+	LogTrace(PSTR("FreeBQ Main started."));
 }
 
 CFreeBQ::~CFreeBQ() { }

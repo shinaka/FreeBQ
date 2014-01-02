@@ -9,6 +9,7 @@ class CFreeBQ
 public:
 	CFreeBQ();
 	~CFreeBQ();
+	inline CFBQSettingsLib* GetSettingsLibrary() { return m_settingsLib; }
 protected:
 	CFBQSettingsLib* m_settingsLib;
 };
