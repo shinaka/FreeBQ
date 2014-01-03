@@ -1,7 +1,7 @@
 #include "FBQSettingsLib.h"
 #include <EEPROMex.h>
 #include "FBQUtils.h"
-#define FBQVersion "va1"
+#define FBQVersion "va3"
 
 CFBQSettingsLib::CFBQSettingsLib(void)
 {
@@ -96,9 +96,9 @@ void CFBQSettingsLib::LoadConfig()
 	LogTrace(PSTR("Loading EEPROM Config."));
 
 	EEPROM.readBlock(CONFIG_START, m_settings);
-	if (m_settings.configVer != FBQVersion)
+	if (strcmp(m_settings.configVer, FBQVersion) != 0)
 	{
-		m_settings.ip = IPAddress(192, 168, 1, 32);
+		m_settings.ip = IPAddress(192, 168, 1, 5);
 		m_settings.subnet = IPAddress(255, 255, 255, 0);
 		m_settings.gateway = IPAddress(192, 168, 1, 1);
 
@@ -119,37 +119,4 @@ void CFBQSettingsLib::LoadConfig()
 
 		SaveConfig();
 	}
-	/*
-	if (EEPROM.read(CONFIG_START + sizeof(m_settings)-2) == m_settings.configVer[2] &&
-		EEPROM.read(CONFIG_START + sizeof(m_settings)-3) == m_settings.configVer[1] &&
-		EEPROM.read(CONFIG_START + sizeof(m_settings)-4) == m_settings.configVer[0])
-	{ // reads settings from EEPROM
-		for (unsigned int t = 0; t<sizeof(m_settings); t++)
-			*((char*)&m_settings + t) = EEPROM.read(CONFIG_START + t);
-	}
-	else 
-	{
-		LogError(PSTR("Writing new EEPROM Save."));
-		m_settings.ip = IPAddress(192, 168, 1, 32);
-		m_settings.subnet = IPAddress(255, 255, 255, 0);
-		m_settings.gateway = IPAddress(192, 168, 1, 1);
-
-		char ver[4] = FBQVersion;
-		strcpy(m_settings.configVer, FBQVersion);
-
-		strncpy(m_settings.blower1name, "Blower 1", sizeof(m_settings.blower1name));
-		strncpy(m_settings.blower2name, "Blower 2", sizeof(m_settings.blower2name));
-		strncpy(m_settings.blower3name, "Blower 3", sizeof(m_settings.blower3name));
-
-		strncpy(m_settings.probe1name, "Probe 1", sizeof(m_settings.probe1name));
-		strncpy(m_settings.probe2name, "Probe 2", sizeof(m_settings.probe2name));
-		strncpy(m_settings.probe3name, "Probe 3", sizeof(m_settings.probe3name));
-
-		m_settings.probe1blower = 1;
-		m_settings.probe2blower = 2;
-		m_settings.probe3blower = 3;
-
-		SaveConfig();
-	}
-	*/
 }

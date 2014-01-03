@@ -1,7 +1,6 @@
 #include "FreeBQMain.h"
 #include "Arduino.h"
 #include <avr/pgmspace.h>
-#include "FreeBQModule.h"
 #include "FBQUtils.h"
 CFreeBQ::CFreeBQ()
 {
@@ -9,4 +8,7 @@ CFreeBQ::CFreeBQ()
 	LogTrace(PSTR("FreeBQ Main started."));
 }
 
-CFreeBQ::~CFreeBQ() { }
+CFreeBQ::~CFreeBQ() 
+{ 
+	delete[] m_settingsLib;
+}
